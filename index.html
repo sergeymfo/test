@@ -6,44 +6,39 @@
   <title>Перевірка Telegram</title>
 </head>
 <body>
-  <h1>Перевірка Telegram</h1>
-  <button id="checkTelegram">Перевірити</button>
-  <p id="result"></p>
+  <p id="result">Перевіряємо...</p>
 
   <script>
-    document.getElementById("checkTelegram").addEventListener("click", function () {
+    window.addEventListener("load", function () {
       const result = document.getElementById("result");
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
       const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
       const isAndroid = /Android/i.test(userAgent);
 
-      // Спроба відкрити Telegram
+      // Функція перевірки Telegram
       const checkTelegramApp = () => {
         const startTime = Date.now();
 
-        // Перенаправлення на Telegram-схему
-        window.location = "tg://resolve?domain=username"; // Вкажіть ваш username у Telegram
+        // Спроба відкрити Telegram через схему
+        window.location = "tg://resolve?domain=LookEVA_bot"; // Посилання на ваш бот
 
         // Таймер для перевірки
         setTimeout(() => {
           const endTime = Date.now();
 
-          // Якщо Telegram не встановлено, користувач не перейде й залишиться у браузері.
+          // Якщо користувач залишився на сайті
           if (endTime - startTime < 1500) {
-            result.textContent = "Telegram не встановлено.";
-          } else {
-            result.textContent = "Telegram відкрито!";
+            result.textContent = "Привіт.";
           }
         }, 1500);
       };
 
-      // Запускаємо перевірку
+      // Логіка запуску
       if (isIOS || isAndroid) {
-        result.textContent = "Перевіряємо Telegram...";
         checkTelegramApp();
       } else {
-        result.textContent = "Перевірка можлива лише на мобільних пристроях.";
+        result.textContent = "Привіт.";
       }
     });
   </script>
