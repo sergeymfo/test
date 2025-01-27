@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensor-Based Background</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.2s ease;
+    }
+    h1 {
+      color: white;
+      text-shadow: 1px 1px 2px black;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Перевіряємо підтримку API пристрою
+    if (window.DeviceMotionEvent || window.DeviceOrientationEvent) {
+      document.body.innerHTML = '<h1>Рухайте пристрій!</h1>';
+
+      // Обробка подій акселерометра
+      window.addEventListener('devicemotion', (event) => {
+        const acceleration = event.acceleration;
+        if (acceleration) {
+          const red = Math.min(255, Math.abs(acceleration.x * 25));
+          const green = Math.min(255, Math.abs(acceleration.y * 25));
+          const blue = Math.min(255, Math.abs(acceleration.z * 25));
+          document.body.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        }
+      });
+
+      // Обробка подій гіроскопа
+      window.addEventListener('deviceorientation', (event) => {
+        const alpha = event.alpha; // Обертання навколо Z-осі
+        const beta = event.beta;   // Нахил вперед-назад (X-вісь)
+        const gamma = event.gamma; // Нахил вліво-вправо (Y-вісь)
+
+        if (alpha !== null && beta !== null && gamma !== null) {
+          const hue = Math.abs(alpha) % 360; // Відтінок
+          const lightness = 50 + (beta / 180) * 50; // Яскравість
+          const saturation = 50 + (gamma / 90) * 50; // Насиченість
+
+          document.body.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        }
+      });
+    } else {
+      document.body.innerHTML = '<h1>Ваш пристрій не підтримує сенсори руху.</h1>';
+    }
+  </script>
+</body>
+</html>
