@@ -12,20 +12,27 @@
 
   <script>
     document.getElementById("checkTelegram").addEventListener("click", function () {
-      const now = Date.now();
       const result = document.getElementById("result");
 
-      // Спробувати відкрити Telegram
-      window.location = "tg://resolve?domain=username";
+      // Перевіряємо підтримку tg://
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = "tg://resolve?domain=username";
 
-      // Затримка для перевірки
-      setTimeout(() => {
-        if (Date.now() - now < 1500) {
-          result.textContent = "Telegram не встановлений.";
-        } else {
-          result.textContent = "Telegram встановлений.";
-        }
-      }, 1000);
+      document.body.appendChild(iframe);
+
+      // Таймер для перевірки
+      const timeout = setTimeout(() => {
+        document.body.removeChild(iframe);
+        result.textContent = "Telegram не встановлений або заблокований.";
+      }, 1500);
+
+      // Якщо користувач перейде в Telegram, подія `blur` спрацює
+      window.addEventListener("blur", () => {
+        clearTimeout(timeout);
+        document.body.removeChild(iframe);
+        result.textContent = "Telegram встановлений!";
+      });
     });
   </script>
 </body>
