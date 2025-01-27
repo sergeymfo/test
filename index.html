@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check Telegram</title>
+</head>
+<body>
+  <h1>Перевірка Telegram</h1>
+  <button id="checkTelegram">Перевірити</button>
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("checkTelegram").addEventListener("click", function () {
+      const now = Date.now();
+      const result = document.getElementById("result");
+
+      // Спробувати відкрити Telegram
+      window.location = "tg://resolve?domain=username";
+
+      // Затримка для перевірки
+      setTimeout(() => {
+        if (Date.now() - now < 1500) {
+          result.textContent = "Telegram не встановлений.";
+        } else {
+          result.textContent = "Telegram встановлений.";
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
