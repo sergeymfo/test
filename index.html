@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Check Telegram</title>
+  <title>Перевірка Telegram</title>
 </head>
 <body>
   <h1>Перевірка Telegram</h1>
@@ -13,28 +13,38 @@
   <script>
     document.getElementById("checkTelegram").addEventListener("click", function () {
       const result = document.getElementById("result");
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+      const isAndroid = /Android/i.test(userAgent);
 
       // Спроба відкрити Telegram
-      const openTelegramApp = () => {
-        const iframe = document.createElement("iframe");
-        iframe.style.display = "none";
-        iframe.src = "tg://resolve?domain=username"; // Замість username вставте ваш Telegram username
-        document.body.appendChild(iframe);
+      const checkTelegramApp = () => {
+        const startTime = Date.now();
 
-        const timeout = setTimeout(() => {
-          document.body.removeChild(iframe);
-          result.textContent = "Telegram не встановлено.";
+        // Перенаправлення на Telegram-схему
+        window.location = "tg://resolve?domain=username"; // Вкажіть ваш username у Telegram
+
+        // Таймер для перевірки
+        setTimeout(() => {
+          const endTime = Date.now();
+
+          // Якщо Telegram не встановлено, користувач не перейде й залишиться у браузері.
+          if (endTime - startTime < 1500) {
+            result.textContent = "Telegram не встановлено.";
+          } else {
+            result.textContent = "Telegram відкрито!";
+          }
         }, 1500);
-
-        window.addEventListener("blur", () => {
-          clearTimeout(timeout);
-          document.body.removeChild(iframe);
-          result.textContent = "Telegram встановлено!";
-        });
       };
 
-      // Викликаємо функцію перевірки
-      openTelegramApp();
+      // Запускаємо перевірку
+      if (isIOS || isAndroid) {
+        result.textContent = "Перевіряємо Telegram...";
+        checkTelegramApp();
+      } else {
+        result.textContent = "Перевірка можлива лише на мобільних пристроях.";
+      }
     });
   </script>
 </body>
