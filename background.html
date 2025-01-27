@@ -18,14 +18,49 @@
       color: white;
       text-shadow: 1px 1px 2px black;
     }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
+  <button id="enable-sensors">Enable Sensors</button>
   <script>
-    // Перевіряємо підтримку API пристрою
-    if (window.DeviceMotionEvent || window.DeviceOrientationEvent) {
-      document.body.innerHTML = '<h1>Рухайте пристрій!</h1>';
+    const button = document.getElementById('enable-sensors');
+    button.addEventListener('click', () => {
+      if (DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function') {
+        // Запитуємо дозвіл на доступ до сенсорів
+        DeviceMotionEvent.requestPermission()
+          .then((response) => {
+            if (response === 'granted') {
+              initializeSensors();
+              button.style.display = 'none';
+            } else {
+              alert('Access to motion sensors was denied.');
+            }
+          })
+          .catch((error) => {
+            console.error('Request permission error:', error);
+          });
+      } else {
+        // Якщо дозвіл не потрібен
+        initializeSensors();
+        button.style.display = 'none';
+      }
+    });
 
+    function initializeSensors() {
+      document.body.innerHTML = '<h1>Рухайте пристрій!</h1>';
+      
       // Обробка подій акселерометра
       window.addEventListener('devicemotion', (event) => {
         const acceleration = event.acceleration;
@@ -51,8 +86,6 @@
           document.body.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
       });
-    } else {
-      document.body.innerHTML = '<h1>Ваш пристрій не підтримує сенсори руху.</h1>';
     }
   </script>
 </body>
