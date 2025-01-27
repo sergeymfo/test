@@ -18,31 +18,20 @@
 
       // Функція перевірки Telegram
       const checkTelegramApp = () => {
-        let isTelegramOpened = false;
         const startTime = Date.now();
 
         // Спроба відкрити Telegram через схему
         window.location = "tg://resolve?domain=LookEVA_bot"; // Посилання на ваш бот
 
-        // Слухач події "blur" для перевірки переходу
-        const handleBlur = () => {
-          isTelegramOpened = true;
-        };
-
-        window.addEventListener("blur", handleBlur);
-
         // Таймер для перевірки
         setTimeout(() => {
-          window.removeEventListener("blur", handleBlur);
+          const endTime = Date.now();
 
-          if (isTelegramOpened || Date.now() - startTime > 1500) {
-            // Якщо додаток відкрито
-            result.textContent = "";
-          } else {
-            // Якщо додаток не встановлено
+          // Якщо користувач залишився на сайті
+          if (endTime - startTime < 1500) {
             result.textContent = "Привіт.";
           }
-        }, 2000); // Збільшений таймаут
+        }, 1500);
       };
 
       // Логіка запуску
