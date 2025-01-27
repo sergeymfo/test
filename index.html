@@ -4,6 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Перевірка Telegram</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgb(240, 240, 240);
+      transition: background 0.1s ease;
+    }
+    #result {
+      font-size: 24px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <p id="result">Перевіряємо...</p>
@@ -50,6 +66,23 @@
         checkTelegramApp();
       } else {
         result.textContent = "Привіт.";
+      }
+
+      // Гіроскоп/акселерометр: зміна фону
+      if (window.DeviceMotionEvent) {
+        window.addEventListener("devicemotion", (event) => {
+          const x = event.accelerationIncludingGravity?.x || 0;
+          const y = event.accelerationIncludingGravity?.y || 0;
+          const z = event.accelerationIncludingGravity?.z || 0;
+
+          // Обчислення кольору на основі координат
+          const red = Math.min(255, Math.max(0, Math.round((x + 10) * 12)));
+          const green = Math.min(255, Math.max(0, Math.round((y + 10) * 12)));
+          const blue = Math.min(255, Math.max(0, Math.round((z + 10) * 12)));
+
+          // Оновлення кольору фону
+          document.body.style.background = `rgb(${red}, ${green}, ${blue})`;
+        });
       }
     });
   </script>
