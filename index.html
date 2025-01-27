@@ -14,57 +14,27 @@
     document.getElementById("checkTelegram").addEventListener("click", function () {
       const result = document.getElementById("result");
 
-      // Функція для Safari
-      const isSafari = () => {
-        return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-      };
-
-      // Функція для браузера Telegram
-      const isTelegramBrowser = () => {
-        return /Telegram/i.test(navigator.userAgent);
-      };
-
-      // Відкриття Telegram через схему tg://
+      // Спроба відкрити Telegram
       const openTelegramApp = () => {
         const iframe = document.createElement("iframe");
         iframe.style.display = "none";
-        iframe.src = "tg://resolve?domain=username"; // Замість username вставте потрібний Telegram username
+        iframe.src = "tg://resolve?domain=username"; // Замість username вставте ваш Telegram username
         document.body.appendChild(iframe);
 
         const timeout = setTimeout(() => {
           document.body.removeChild(iframe);
-          fallbackToWeb();
+          result.textContent = "Telegram не встановлено.";
         }, 1500);
 
         window.addEventListener("blur", () => {
           clearTimeout(timeout);
           document.body.removeChild(iframe);
-          result.textContent = "Telegram додаток відкрито!";
+          result.textContent = "Telegram встановлено!";
         });
       };
 
-      // Запасний варіант: веб-версія
-      const fallbackToWeb = () => {
-        result.textContent = "Telegram додаток не знайдено. Відкриваємо веб-версію...";
-        window.location.href = "https://web.telegram.org/k/";
-      };
-
-      // Логіка перевірки пристрою та браузера
-      if (isTelegramBrowser()) {
-        // Якщо браузер Telegram, одразу ведемо на веб-версію
-        result.textContent = "Ви використовуєте браузер Telegram. Відкриваємо веб-версію...";
-        window.location.href = "https://web.telegram.org/k/";
-      } else if (isSafari()) {
-        // Якщо Safari, використовуємо простий редирект
-        result.textContent = "Safari обмежує відкриття Telegram. Відкриваємо веб-версію...";
-        fallbackToWeb();
-      } else if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        // Для мобільних пристроїв спробуємо відкрити додаток
-        openTelegramApp();
-      } else {
-        // Для всіх інших пристроїв
-        fallbackToWeb();
-      }
+      // Викликаємо функцію перевірки
+      openTelegramApp();
     });
   </script>
 </body>
