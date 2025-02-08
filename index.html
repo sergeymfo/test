@@ -1,72 +1,33 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Запустіть бота</title>
-
+    <title>Redirect</title>
     <script>
-        // Головна змінна для імені бота
-        const BOT_USERNAME = "https://tg.pulse.is/DressMeUpAI_bot?start=67865e6e2949a3deb80c9641|utm=sergey"; // Змінюйте це значення для іншого бота
+        window.onload = function() {
+            // Случайное число от 0 до 1
+            const random = Math.random();
 
-        // Формування посилань
-        const TELEGRAM_LINK = `{BOT_USERNAME}`;
-        const TELEGRAM_DEEP_LINK = `{BOT_USERNAME}`;
-        const BOT_IMAGE = `https://yourwebsite.com/${BOT_USERNAME}-preview.jpg`; // Оновіть, якщо є окрема картинка для бота
+            // Условие перенаправления
+            if (random < 0.6) {
+                // 30% вероятность
+                 // window.location.href = "https://love.love2412.online/go.php?flow=252449-264523-1";
+                   // window.location.href = "https://t.me/moichatdatingbot?start=flow-252449-264147-1";
+                   //  window.location.href = "https://okbra.net/tg?start=urCafLEY";
+                      window.location.href = "https://tg.pulse.is/DressMeUpAI_bot?start=67865e6e2949a3deb80c9641|utm=sergey";
+               
+            } else if (random < 0.9) {
+                // 35% вероятность
+              window.location.href = "https://tg.pulse.is/DressMeUpAI_bot?start=67865e6e2949a3deb80c9641|utm=sergey";
+            } else {
+                // 35% вероятность
+                window.location.href = "https://tg.pulse.is/DressMeUpAI_bot?start=67865e6e2949a3deb80c9641|utm=sergey";
+            }
+        };
     </script>
-
-    <!-- Open Graph Meta Tags (для Facebook, LinkedIn) -->
-    <meta property="og:title" content="Ваш AI-бот у Telegram">
-    <meta property="og:description" content="Запустіть Telegram-бота і отримуйте розумні відповіді та аналітику!">
-    <meta property="og:image" id="ogImage">
-    <meta property="og:url" id="ogUrl">
-    <meta property="og:type" content="website">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Ваш AI-бот у Telegram">
-    <meta name="twitter:description" content="Запустіть Telegram-бота і отримуйте розумні відповіді та аналітику!">
-    <meta name="twitter:image" id="twitterImage">
-
-    <!-- Telegram App Deep Link -->
-    <meta property="al:ios:app_store_id" content="686449807">
-    <meta property="al:ios:url" id="iosLink">
-    <meta property="al:android:url" id="androidLink">
-    <meta property="al:android:package" content="org.telegram.messenger">
 </head>
 <body>
-    <h1 id="title">Запустіть бота</h1>
-    <p id="description">Якщо у вас є Telegram, натисніть кнопку нижче, щоб почати.</p>
-    <a class="tgme_action_button_new" href="#" id="startBot">Запустити бота</a>
-
-    <script>
-        // Встановлення мета-тегів динамічно
-        document.getElementById("ogImage").content = BOT_IMAGE;
-        document.getElementById("twitterImage").content = BOT_IMAGE;
-        document.getElementById("ogUrl").content = TELEGRAM_LINK;
-        document.getElementById("iosLink").content = TELEGRAM_DEEP_LINK;
-        document.getElementById("androidLink").content = TELEGRAM_DEEP_LINK;
-
-        // Визначення мови браузера
-        const userLang = navigator.language || navigator.userLanguage;
-        const lang = userLang.substring(0, 2);
-
-        // Тексти для різних мов
-        const translations = {
-            en: { title: "Launch the Bot", description: "Click the button below to start.", button: "Start Bot" },
-            uk: { title: "Запустіть бота", description: "Якщо у вас є Telegram, натисніть кнопку нижче, щоб почати.", button: "Запустити бота" },
-            ru: { title: "Запустите бота", description: "Если у вас есть Telegram, нажмите кнопку ниже, чтобы начать.", button: "Запустить бота" },
-            es: { title: "Iniciar el bot", description: "Si tienes Telegram, haz clic en el botón de abajo para comenzar.", button: "Iniciar bot" }
-        };
-
-        // Встановлюємо правильний переклад (за замовчуванням англійська)
-        const selectedLang = translations[lang] || translations["en"];
-        document.getElementById("title").innerText = selectedLang.title;
-        document.getElementById("description").innerText = selectedLang.description;
-        document.getElementById("startBot").innerText = selectedLang.button;
-
-        // Додаємо посилання на бота
-        document.getElementById("startBot").href = TELEGRAM_LINK;
-    </script>
+    <p>Загрузка...</p>
 </body>
 </html>
