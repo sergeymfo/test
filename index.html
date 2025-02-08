@@ -1,90 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Перевірка Telegram</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgb(240, 240, 240);
-      transition: background 0.1s ease;
-    }
-    #result {
-      font-size: 24px;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запустіть бота</title>
+
+    <script>
+        // Головна змінна для імені бота
+        const BOT_USERNAME = "LookEVA_bot"; // Змінюйте це значення для іншого бота
+
+        // Формування посилань
+        const TELEGRAM_LINK = `https://t.me/${BOT_USERNAME}`;
+        const TELEGRAM_DEEP_LINK = `tg://resolve?domain=${BOT_USERNAME}`;
+        const BOT_IMAGE = `https://yourwebsite.com/${BOT_USERNAME}-preview.jpg`; // Оновіть, якщо є окрема картинка для бота
+    </script>
+
+    <!-- Open Graph Meta Tags (для Facebook, LinkedIn) -->
+    <meta property="og:title" content="Ваш AI-бот у Telegram">
+    <meta property="og:description" content="Запустіть Telegram-бота і отримуйте розумні відповіді та аналітику!">
+    <meta property="og:image" id="ogImage">
+    <meta property="og:url" id="ogUrl">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ваш AI-бот у Telegram">
+    <meta name="twitter:description" content="Запустіть Telegram-бота і отримуйте розумні відповіді та аналітику!">
+    <meta name="twitter:image" id="twitterImage">
+
+    <!-- Telegram App Deep Link -->
+    <meta property="al:ios:app_store_id" content="686449807">
+    <meta property="al:ios:url" id="iosLink">
+    <meta property="al:android:url" id="androidLink">
+    <meta property="al:android:package" content="org.telegram.messenger">
 </head>
 <body>
-  <p id="result">Перевіряємо...</p>
+    <h1 id="title">Запустіть бота</h1>
+    <p id="description">Якщо у вас є Telegram, натисніть кнопку нижче, щоб почати.</p>
+    <a class="tgme_action_button_new" href="#" id="startBot">Запустити бота</a>
 
-  <script>
-    window.addEventListener("load", function () {
-      const result = document.getElementById("result");
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    <script>
+        // Встановлення мета-тегів динамічно
+        document.getElementById("ogImage").content = BOT_IMAGE;
+        document.getElementById("twitterImage").content = BOT_IMAGE;
+        document.getElementById("ogUrl").content = TELEGRAM_LINK;
+        document.getElementById("iosLink").content = TELEGRAM_DEEP_LINK;
+        document.getElementById("androidLink").content = TELEGRAM_DEEP_LINK;
 
-      const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
-      const isAndroid = /Android/i.test(userAgent);
+        // Визначення мови браузера
+        const userLang = navigator.language || navigator.userLanguage;
+        const lang = userLang.substring(0, 2);
 
-      // Функція перевірки Telegram
-      const checkTelegramApp = () => {
-        let isTelegramOpened = false;
-        const startTime = Date.now();
-
-        // Спроба відкрити Telegram через схему
-        window.location = "tg://resolve?domain=LookEVA_bot"; // Посилання на ваш бот
-
-        // Слухач події "blur" для перевірки переходу
-        const handleBlur = () => {
-          isTelegramOpened = true;
+        // Тексти для різних мов
+        const translations = {
+            en: { title: "Launch the Bot", description: "Click the button below to start.", button: "Start Bot" },
+            uk: { title: "Запустіть бота", description: "Якщо у вас є Telegram, натисніть кнопку нижче, щоб почати.", button: "Запустити бота" },
+            ru: { title: "Запустите бота", description: "Если у вас есть Telegram, нажмите кнопку ниже, чтобы начать.", button: "Запустить бота" },
+            es: { title: "Iniciar el bot", description: "Si tienes Telegram, haz clic en el botón de abajo para comenzar.", button: "Iniciar bot" }
         };
 
-        window.addEventListener("blur", handleBlur);
+        // Встановлюємо правильний переклад (за замовчуванням англійська)
+        const selectedLang = translations[lang] || translations["en"];
+        document.getElementById("title").innerText = selectedLang.title;
+        document.getElementById("description").innerText = selectedLang.description;
+        document.getElementById("startBot").innerText = selectedLang.button;
 
-        // Таймер для перевірки
-        setTimeout(() => {
-          window.removeEventListener("blur", handleBlur);
-
-          if (isTelegramOpened || Date.now() - startTime > 1500) {
-            // Якщо додаток відкрито
-            result.textContent = "";
-          } else {
-            // Якщо додаток не встановлено
-            result.textContent = "Привіт.";
-          }
-        }, 2000); // Збільшений таймаут
-      };
-
-      // Логіка запуску
-      if (isIOS || isAndroid) {
-        checkTelegramApp();
-      } else {
-        result.textContent = "Привіт.";
-      }
-
-      // Гіроскоп/акселерометр: зміна фону
-      if (window.DeviceMotionEvent) {
-        window.addEventListener("devicemotion", (event) => {
-          const x = event.accelerationIncludingGravity?.x || 0;
-          const y = event.accelerationIncludingGravity?.y || 0;
-          const z = event.accelerationIncludingGravity?.z || 0;
-
-          // Обчислення кольору на основі координат
-          const red = Math.min(255, Math.max(0, Math.round((x + 10) * 12)));
-          const green = Math.min(255, Math.max(0, Math.round((y + 10) * 12)));
-          const blue = Math.min(255, Math.max(0, Math.round((z + 10) * 12)));
-
-          // Оновлення кольору фону
-          document.body.style.background = `rgb(${red}, ${green}, ${blue})`;
-        });
-      }
-    });
-  </script>
+        // Додаємо посилання на бота
+        document.getElementById("startBot").href = TELEGRAM_LINK;
+    </script>
 </body>
 </html>
